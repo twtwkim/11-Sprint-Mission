@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getProducts } from "../api/api.js";
 import { Link } from "react-router-dom";
 import "../css/AllItem.css";
-import { useMediaQuery } from "react-responsive";
+import SelectOrderBy from "./SelectOrderBy.jsx";
 
 const AllItem = () => {
   const [products, setProducts] = useState([]); // 제품 리스트 저장 상태
@@ -11,12 +11,32 @@ const AllItem = () => {
   const [orderBy, setOrderBy] = useState("recent"); //정렬 상태
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [pageSize, setPageSize] = useState(getPageSize(window.innerWidth));
 
-  const isDesktop = useMediaQuery({ minWidth: 1200 });
-  const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1199 });
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+  function getPageSize(width) {
+    // 윈도우 크기에 따라 pageSize 계산하는 함수
+    if (width >= 1200) {
+      return 10;
+    } else if (width >= 768) {
+      return 6;
+    } else {
+      return 4;
+    }
+  }
 
-  const pageSize = isDesktop ? 10 : isTablet ? 6 : isMobile ? 4 : 10;
+  useEffect(() => {
+    // 윈도우 크기 변경 시 pageSize를 업데이트
+    const handleResize = () => {
+      setPageSize(getPageSize(window.innerWidth));
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const totalPage = Math.ceil(totalCount / pageSize); // 전체 페이지 개수 구하기
 
@@ -96,18 +116,11 @@ const AllItem = () => {
           <Link to="/additem">
             <button className="add-button">상품 등록하기</button>
           </Link>
-          <select
+          <SelectOrderBy
             className="option-select"
             value={orderBy}
             onChange={handleOrderChange}
-          >
-            <option className="option" value="recent">
-              최신순
-            </option>
-            <option className="option" value="favorite">
-              좋아요순
-            </option>
-          </select>
+          />
         </div>
       </div>
       <ul className="all-product-list-container">

@@ -17,7 +17,6 @@ const FavoriteItem = () => {
           orderBy: "favorite",
           keyword: "",
         });
-        console.log(result);
         setProducts(result.list);
       } catch (err) {
         setError(err.message);
