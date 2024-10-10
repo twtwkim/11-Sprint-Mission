@@ -9,10 +9,9 @@ const FavoriteItem = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      let result;
       try {
         setLoading(true);
-        result = await getProducts({
+        const result = await getProducts({
           page: 1,
           pageSize: 4,
           orderBy: "favorite",
