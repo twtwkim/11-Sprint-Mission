@@ -3,6 +3,7 @@ import { getProducts } from "../api/api.js";
 import { Link } from "react-router-dom";
 import "../css/AllItem.css";
 import SelectOrderBy from "./SelectOrderBy.jsx";
+import Pagination from "./Pagination.jsx";
 
 const AllItem = () => {
   const [products, setProducts] = useState([]); // 제품 리스트 저장 상태
@@ -83,16 +84,8 @@ const AllItem = () => {
     }
   };
 
-  const getPageNumber = () => {
-    //페이지네이션 넘버링을 위한 계산
-    const pageNumbers = [];
-    const start = Math.max(1, page - 2);
-    const end = Math.min(start + 4, totalPage); //마지막 페이지가 5개묶음 도중 끝날경우 대비
-
-    for (let i = start; i <= end; i++) {
-      pageNumbers.push(i);
-    }
-    return pageNumbers;
+  const handlePageSelect = (selectedPage) => {
+    setPage(selectedPage);
   };
 
   if (loading) {
@@ -152,33 +145,13 @@ const AllItem = () => {
           <p>No products available</p>
         )}
       </ul>
-      <div className="pagination">
-        <button
-          onClick={handlePrevPage}
-          disabled={page === 1}
-          className="pagination-button"
-        >
-          &lt;
-        </button>
-        {getPageNumber().map((number) => (
-          <button
-            key={number}
-            onClick={() => setPage(number)}
-            className={
-              number === page ? "pagination-active" : "pagination-inactive"
-            }
-          >
-            {number}
-          </button>
-        ))}
-        <button
-          onClick={handleNextPage}
-          disabled={page === totalPage}
-          className="pagination-button"
-        >
-          &gt;
-        </button>
-      </div>
+      <Pagination
+        page={page}
+        totalPage={totalPage}
+        onNext={handleNextPage}
+        onPrev={handlePrevPage}
+        onPageSelect={handlePageSelect}
+      />
     </div>
   );
 };
