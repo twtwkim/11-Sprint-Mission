@@ -1,6 +1,6 @@
 export async function getProducts({
   page = "",
-  pageSize = 10,
+  pageSize = "",
   orderBy = "",
   keyword = "",
 }) {
