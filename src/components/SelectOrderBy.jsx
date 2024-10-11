@@ -1,8 +1,8 @@
 import React from "react";
 
-const SelectOrderBy = ({ orderBy, onChange }) => {
+const SelectOrderBy = ({ value, onChange }) => {
   return (
-    <select className="option-select" value={orderBy} onChange={onChange}>
+    <select className="option-select" value={value} onChange={onChange}>
       <option className="option" value="recent">
         최신순
       </option>
