@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DeleteButton from "../common/DeleteButton";
 import "../css/FileInput.css";
 
@@ -6,6 +6,15 @@ const FileInput = ({ value, onChange, onInputChange }) => {
   const { tags, price, description, name } = value;
   const [preview, setPreview] = useState(null);
   const [imgError, setImgError] = useState("");
+
+  useEffect(() => {
+    // preview 이미지 URL을 해제하는 클린업 함수
+    return () => {
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
 
   const handleImageChange = (e) => {
     // 이미지 세트함수
@@ -20,10 +29,6 @@ const FileInput = ({ value, onChange, onInputChange }) => {
       // 이미지 프리뷰
       const imgURL = URL.createObjectURL(nextValue);
       setPreview(imgURL);
-      return () => {
-        setPreview();
-        URL.revokeObjectURL(nextValue);
-      };
     }
   };
 
