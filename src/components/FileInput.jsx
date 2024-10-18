@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import DeleteButton from "../common/DeleteButton";
 import "../css/FileInput.css";
 
 const FileInput = ({ value, onChange, onInputChange }) => {
@@ -85,12 +86,11 @@ const FileInput = ({ value, onChange, onInputChange }) => {
                 alt="이미지 미리보기"
                 className="preview-image"
               />
-              <button
+              <DeleteButton
+                altText="프리뷰 삭제 버튼"
+                onClick={handleRemovePreview}
                 className="preview-delete"
-                onClick={() => handleRemovePreview(preview)}
-              >
-                <img src="/assets/ic_X.png" alt="프리뷰 삭제 버튼" />
-              </button>
+              />
             </div>
           )}
         </div>
@@ -140,12 +140,11 @@ const FileInput = ({ value, onChange, onInputChange }) => {
           {tags.map((tag, index) => (
             <div key={index} className="tag-box">
               #{tag}
-              <button
-                className="tag-delete"
+              <DeleteButton
+                altText="태그 삭제 버튼"
                 onClick={() => handleRemoveTag(index)}
-              >
-                <img src="/assets/ic_X.png" alt="태그 삭제 버튼" />
-              </button>
+                className="tag-delete"
+              />
             </div>
           ))}
         </div>
