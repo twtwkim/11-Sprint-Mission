@@ -7,7 +7,7 @@ const FileInput = ({ value, onChange, onInputChange }) => {
   const [preview, setPreview] = useState(null);
   const [imgError, setImgError] = useState("");
 
-  const handleChange = (e) => {
+  const handleImageChange = (e) => {
     // 이미지 세트함수
     const nextValue = e.target.files[0];
     if (preview) {
@@ -50,10 +50,8 @@ const FileInput = ({ value, onChange, onInputChange }) => {
     onChange("tags", updatedTags);
   };
 
-  const isFormValid = () => {
-    //등록 버튼 활성화 가능?
-    return name && description && price && tags.length > 0;
-  };
+  const isFormValid = () => name && description && price && tags.length;
+
   return (
     <div className="fileInput-box">
       <section className="register-box">
@@ -76,7 +74,7 @@ const FileInput = ({ value, onChange, onInputChange }) => {
               type="file"
               id="image-upload"
               name="images"
-              onChange={handleChange}
+              onChange={handleImageChange}
             />
           </div>
           {preview && (
