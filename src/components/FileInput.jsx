@@ -2,13 +2,20 @@ import React, { useState, useEffect } from "react";
 import DeleteButton from "../common/DeleteButton";
 import "../css/FileInput.css";
 
-const FileInput = ({ value, onChange, onInputChange }) => {
-  const { tags, price, description, name } = value;
+const INITIAL_VALUES = {
+  name: "",
+  price: "",
+  description: "",
+};
+
+const FileInput = ({ initialValues = INITIAL_VALUES }) => {
+  // 이미지와 태그 상태를 별도로 관리
   const [preview, setPreview] = useState(null);
+  const [tags, setTags] = useState([]);
+  const [values, setValues] = useState(initialValues);
   const [imgError, setImgError] = useState("");
 
   useEffect(() => {
-    // preview 이미지 URL을 해제하는 클린업 함수
     return () => {
       if (preview) {
         URL.revokeObjectURL(preview);
@@ -17,45 +24,44 @@ const FileInput = ({ value, onChange, onInputChange }) => {
   }, [preview]);
 
   const handleImageChange = (e) => {
-    // 이미지 세트함수
     const nextValue = e.target.files[0];
     if (preview) {
       setImgError("*이미지 등록은 최대 1개까지 가능합니다.");
       return;
     }
-    onChange("images", nextValue);
-
     if (nextValue) {
-      // 이미지 프리뷰
       const imgURL = URL.createObjectURL(nextValue);
       setPreview(imgURL);
     }
   };
 
-  const handleRemovePreview = (preview) => {
-    //이미지 프리뷰, 에러메세지 삭제
+  const handleRemovePreview = () => {
     setPreview(null);
     setImgError("");
   };
 
   const handleTagChange = (e) => {
-    //태그 입력 및 엔터
     const newTag = e.target.value.trim();
     if (e.key === "Enter" && newTag !== "") {
       e.preventDefault();
-      const updatedTags = [...tags, newTag];
-      onChange("tags", updatedTags);
+      setTags((prevTags) => [...prevTags, newTag]);
       e.target.value = "";
     }
   };
 
   const handleRemoveTag = (index) => {
-    // 태그 제거
-    const updatedTags = tags.filter((_, i) => i !== index);
-    onChange("tags", updatedTags);
+    setTags((prevTags) => prevTags.filter((_, i) => i !== index));
   };
 
-  const isFormValid = () => name && description && price && tags.length;
+  const handleValueChange = (name) => (e) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [name]: e.target.value,
+    }));
+  };
+
+  const isFormValid = () =>
+    values.name && values.description && values.price && tags.length;
 
   return (
     <div className="fileInput-box">
@@ -105,31 +111,28 @@ const FileInput = ({ value, onChange, onInputChange }) => {
           type="text"
           className="name-input input"
           placeholder="상품명을 입력해주세요"
-          name="name"
-          value={name}
-          onChange={onInputChange}
-        ></input>
+          value={values.name}
+          onChange={handleValueChange("name")}
+        />
       </section>
       <section className="product-content-box box">
         <p className="small-header">상품 소개</p>
         <textarea
-          name="description"
-          value={description}
+          value={values.description}
           className="content-input input"
           placeholder="상품소개를 입력해주세요"
-          onChange={onInputChange}
-        ></textarea>
+          onChange={handleValueChange("description")}
+        />
       </section>
       <section className="box">
         <p className="small-header">판매가격</p>
         <input
-          name="price"
           type="number"
-          value={price}
+          value={values.price}
           className="input"
           placeholder="판매가격을 입력해주세요"
-          onChange={onInputChange}
-        ></input>
+          onChange={handleValueChange("price")}
+        />
       </section>
       <section className="box tags-box">
         <p className="small-header">태그</p>
@@ -138,7 +141,7 @@ const FileInput = ({ value, onChange, onInputChange }) => {
           className="input"
           placeholder="태그를 입력해주세요"
           onKeyDown={handleTagChange}
-        ></input>
+        />
         <div className="tag-container">
           {tags.map((tag, index) => (
             <div key={index} className="tag-box">
