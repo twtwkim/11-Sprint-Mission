@@ -43,7 +43,6 @@ const CommentsList = () => {
   const handleEditClick = (comment) => {
     //수정하기 클릭 이벤트
     setEditingCommentId(comment.id); // 수정할 댓글 ID 설정
-    setEditedContent(comment.content);
     setActiveDropdown(null); // 드롭다운 닫기
   };
 
