@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom"; // 추가
 import { getProductsById } from "../api/api";
 import CommentsList from "./CommentsList";
 import "../css/DetailItem.css";
-import { FormatDate } from "./FormatDate";
+import { FormatDate } from "../util/FormatDate";
 
 const DetailItem = () => {
   const { productId } = useParams();

@@ -3,7 +3,7 @@ import { getProducts } from "../api/api.js";
 import { Link } from "react-router-dom";
 import "../css/AllItem.css";
 import SelectOrderBy from "./SelectOrderBy.jsx";
-import Pagination from "./Pagination.jsx";
+import Pagination from "../util/Pagination.jsx";
 
 const AllItem = () => {
   const [products, setProducts] = useState([]); // 제품 리스트 저장 상태
