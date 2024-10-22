@@ -118,8 +118,12 @@ const AllItem = () => {
       <ul className="all-product-list-container">
         {products.length > 0 ? (
           products.map((product) => (
-            <Link to={`/items/${product.id}`} className="detail-link">
-              <li key={product.id} className="all-product-list">
+            <Link
+              to={`/items/${product.id}`}
+              key={product.id}
+              className="detail-link"
+            >
+              <li className="all-product-list">
                 {product.images.length > 0 && (
                   <div className="all-product-image-box">
                     <img
