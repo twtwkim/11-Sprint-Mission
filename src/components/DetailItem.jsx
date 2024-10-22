@@ -113,12 +113,7 @@ const DetailItem = () => {
             onChange={handleChange}
           ></textarea>
           <div className="button-box">
-            <button
-              className={`question-register-button ${
-                question ? "active" : "inactive"
-              }`}
-              disabled={!question}
-            >
+            <button className="question-register-button" disabled={!question}>
               등록
             </button>
           </div>
